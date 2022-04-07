@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			jsTool菜单栏
+		</title>
+		<style>
+			* { padding: 0; margin: 0; } body { font:14px "Microsoft YaHei",sans-serif;
+			} ul { list-style: none; } .container { margin: 0 auto; width: 1000px;
+			} .nav { /*margin-top: 60px;*/ width: 100%; height: 40px; line-height:
+			40px; background: #333; } /*一级菜单*/ /*该选择器会选择 所有li*/ .nav li { float: left;
+			position: relative; } /*一级菜单*/ .nav li a { /*因为a是内联元素*/ display: block;
+			width: 100px; text-align: center; color: #fff; text-decoration: none; }
+			/*二级菜单*/ .nav li ul li a { color: #333; } .nav li ul li { /*覆盖前面设置 */ float:
+			none; } .nav li ul { /*border: 1px solid #ccc; border-top: none;*/ background:
+			#fff; /*二级菜单先隐藏*/ display: none; /*绝对定位*/ position: absolute; left:0; top:;
+			} /*划过那个li 哪个li就变红*/ .nav li:hover { background: red; } .nav li:hover ul{
+			display: block; } /*设置banner*/ .banner img { width: 100%; }
+		</style>
+	</head>
+	<body>
+		<div class="nav">
+			<div class="container">
+				<ul>
+					<li>
+						<a href="#">
+							文件
+						</a>
+						<ul>
+							<li>
+                                <input type="file" id="file" style="display:none;" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+								<a href="javascript:selectFile()">
+									打开文件
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									退出
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">
+							模板
+						</a>
+						<ul>
+							<li>
+								<a href="#">
+									1模板载入
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									2模板载入
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									3模板载入
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">
+							帮助
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+        <script type="text/javascript" src="./xlsx.full.min.js"></script>
+        <script type="text/javascript">
+
+            function selectFile() {
+                document.getElementById('file').click();
+            }
+        
+            // 读取本地excel文件
+            function readWorkbookFromLocalFile(file, callback) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var data = e.target.result;
+                    var workbook = XLSX.read(data, {type: 'binary'});
+                    if(callback) callback(workbook);
+                };
+                reader.readAsBinaryString(file);
+            }
+            // 读取 excel文件
+            function outputWorkbook(workbook) {
+	            var sheetNames = workbook.SheetNames; // 工作表名称集合
+	            sheetNames.forEach(name => {
+		        var worksheet = workbook.Sheets[name]; // 只能通过工作表名称来获取指定工作表
+		        for(var key in worksheet) {
+			        // v是读取单元格的原始值
+			        console.log(key, key[0] === '!' ? worksheet[key] : worksheet[key].v);
+		        }
+	});
+}
+
+
+        
+            </script>
+
+
+	</body>
+
+</html>
